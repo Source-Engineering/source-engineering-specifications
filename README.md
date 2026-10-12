@@ -1,4 +1,4 @@
-# Source Engineering -- Specifications
+# Specifications
 
 > Normative technical requirements. The COTS spec is the headline sub-artefact; the decision-types registry is the second.
 
@@ -6,11 +6,11 @@ This repository holds the discipline's normative technical requirements. Every c
 
 ## What is in this repository
 
-- `cots/` -- the headline sub-artefact: the Chain of Orchestrable and Traceable Sources specification. JSON Schemas, YAML schemas, and TOML schemas for the COTS and its parts.
-- `decision-types/` -- the second sub-artefact: a shared, versioned registry of typed questions and declared answer shapes. Each domain (legal, finance, healthcare, ...) writes its own sub-registry.
-- `versioning.md` -- the versioning policy. How schemas are versioned; what counts as a breaking change; what the compatibility guarantees are.
-- `compatibility.md` -- the backward-compatibility guarantees. What a v1 COTS consumer must accept from a v1.x COTS producer.
-- `compatibility-test-suite.md` -- the canonical test cases for the COTS schema. Used by the conformance suite in `Source-Engineering/source-engineering-conformance`.
+- `cots/` - the headline sub-artefact: the Chain of Orchestrable and Traceable Sources specification. JSON Schemas, YAML schemas, and TOML schemas for the COTS and its parts.
+- `decision-types/` - the second sub-artefact: a shared, versioned registry of typed questions and declared answer shapes. Each domain (legal, finance, healthcare, ...) writes its own sub-registry.
+- `versioning.md` - the versioning policy. How schemas are versioned; what counts as a breaking change; what the compatibility guarantees are.
+- `compatibility.md` - the backward-compatibility guarantees. What a v1 COTS consumer must accept from a v1.x COTS producer.
+- `compatibility-test-suite.md` - the canonical test cases for the COTS schema. Used by the conformance suite in `Source-Engineering/source-engineering-conformance`.
 
 ## How to engage
 
