@@ -25,3 +25,8 @@ All notable changes to the Source Engineering specifications repo are recorded h
 ### Added
 
 - `compatibility-matrix.md` - the published per-floor compatibility matrix (specification x reference-implementation x conformance x tools), with the version pinning policy and the v0.1.0 floor's validated cross-check
+
+### Added (RFC-0001 Layer 2 floor, COTS schema v1.1.0)
+
+- `cots/README.md` Part 3: the optional `decisions[*].validation` field (ValidationFlags, `decision_on_validation`, runtime metadata) per RFC-0001; optional per the minor-version rules
+- `compatibility-test-suite.md`: test cases TC-L2-01..06 covering the Layer 2 Validation record (well-formedness, enum enforcement, flags/decision consistency, timestamp validity, v1.0.0 optionality)

@@ -138,3 +138,50 @@ Each test case is named, has a description, has an input COTS (or a description 
 - `versioning.md` -- the versioning policy.
 - `compatibility.md` -- the compatibility guarantees.
 - `Source-Engineering/source-engineering-conformance` -- the conformance suite that runs these test cases.
+## Test case TC-L2-01 -- Validation record well-formed
+
+**Description.** A DecisionRecord carrying a Layer 2 `validation` field that satisfies the v1.1.0 shape.
+
+**Input.** A COTS whose `decisions[0].validation` has a well-formed `flags` array (valid `flag_type` enum values), a `decision_on_validation` of `passed`, `flagged`, or `escalated`, a valid ISO-8601 `validated_at`, and a non-empty `validated_by`.
+
+**Expected outcome.** Pass.
+
+## Test case TC-L2-02 -- Unknown flag_type
+
+**Description.** A Validation record carrying a `flag_type` outside the declared enum.
+
+**Input.** A COTS whose `decisions[0].validation.flags[0].flag_type` is `made-up-flag`.
+
+**Expected outcome.** Fail with error `unknown-flag-type`. Producers must not emit unknown enum values.
+
+## Test case TC-L2-03 -- Unknown decision_on_validation
+
+**Description.** A Validation record carrying a `decision_on_validation` outside the declared enum.
+
+**Input.** A COTS whose `decisions[0].validation.decision_on_validation` is `rejected`.
+
+**Expected outcome.** Fail with error `unknown-decision-on-validation`. Layer 2 does not reject; it flags.
+
+## Test case TC-L2-04 -- Flags inconsistent with decision_on_validation
+
+**Description.** A Validation record whose `decision_on_validation` contradicts its `flags`.
+
+**Input.** A COTS whose `decisions[0].validation` has a non-empty `flags` array but `decision_on_validation` of `passed`.
+
+**Expected outcome.** Fail with error `flags-decision-mismatch`. A non-empty flags array means the decision cannot be `passed`; an empty flags array means it cannot be `flagged` or `escalated`.
+
+## Test case TC-L2-05 -- Malformed validated_at
+
+**Description.** A Validation record whose `validated_at` is not a valid ISO-8601 timestamp.
+
+**Input.** A COTS whose `decisions[0].validation.validated_at` is `yesterday`.
+
+**Expected outcome.** Fail with error `invalid-validated-at`.
+
+## Test case TC-L2-06 -- Validation field optional at v1.0.0
+
+**Description.** A v1.0.0 COTS whose DecisionRecords carry no `validation` field.
+
+**Input.** A conformant v1.0.0 COTS.
+
+**Expected outcome.** Pass. The field is optional; its absence means the producer has not floored Layer 2 (minor-version rules in `versioning.md`).

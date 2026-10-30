@@ -132,10 +132,33 @@ The `decisions` part is an array of `DecisionRecord` objects as defined in the d
         "notes": "Initial creation."
       }
     ],
-    "created_at": "2026-10-11T12:00:00Z"
+    "created_at": "2026-10-11T12:00:00Z",
+    "validation": {
+      "flags": [
+        {
+          "flag_type": "drift-detected",
+          "message": "Calibration drift detected on segment 'contract-law' (0.14 divergence, threshold 0.10).",
+          "detected_at": "2026-10-11T12:00:00Z"
+        }
+      ],
+      "decision_on_validation": "flagged",
+      "validated_at": "2026-10-11T12:00:00Z",
+      "validated_by": "layer2-runtime-validation"
+    }
   }
 ]
 ```
+
+### The Layer 2 Validation record (v1.1.0)
+
+The optional `validation` field on each `DecisionRecord` carries the Layer 2 (Runtime Validation) record, added in COTS schema v1.1.0 per RFC-0001. The field is **optional**: producers on v1.0.0 do not emit it, and consumers must treat its absence as "the producer has not floored Layer 2" (per the minor-version rules in [`versioning.md`](../versioning.md)). When present, it MUST satisfy:
+
+- `flags` is an array of `ValidationFlag` objects, possibly empty. Each flag carries a `flag_type` from the declared enum (`drift-detected`, `segment-signal-divergence`, `parameter-set-out-of-range`, `temporal-validity-expired`), a human-readable `message`, and a `detected_at` timestamp.
+- `decision_on_validation` is one of `passed` (no flags raised), `flagged` (one or more flags raised; the flag is a warning, not a rejection), or `escalated` (validation signalled escalation to a human or organisational authority).
+- `validated_at` is a valid ISO-8601 timestamp, and `validated_by` identifies the validating system.
+- Layer 2 **does not reject**; it flags. A flagged decision MUST still be exposed to Layer 3 (Business Guardrails), which is the layer that can reject. A decision MUST NOT be exposed to Layer 3 before its Validation record, if emitted, is attached.
+
+The interface contract is normative in `Source-Engineering/source-engineering-architecture/layer-contracts/layer-2-runtime-validation.md`.
 
 ## Part 4 -- evidence
 
