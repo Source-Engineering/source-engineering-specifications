@@ -30,3 +30,8 @@ All notable changes to the Source Engineering specifications repo are recorded h
 
 - `cots/README.md` Part 3: the optional `decisions[*].validation` field (ValidationFlags, `decision_on_validation`, runtime metadata) per RFC-0001; optional per the minor-version rules
 - `compatibility-test-suite.md`: test cases TC-L2-01..06 covering the Layer 2 Validation record (well-formedness, enum enforcement, flags/decision consistency, timestamp validity, v1.0.0 optionality)
+
+### Added (RFC-0002 / semantic conformance, COTS schema v1.2.0)
+
+- `cots/README.md` Part 4: the optional `EvidenceItem.source_type` and `evidence.chain_termination` fields per RFC-0002 (recursive evidence chains)
+- `compatibility-test-suite.md`: semantic test cases TC-SEM-01..03 (URN grammar, evidence-chain resolution, temporal ordering) and recursive-chain test cases TC-RC-01..05

@@ -166,6 +166,10 @@ The `evidence` part is the EvidenceChain that links each decision to its support
 
 ```json
 "evidence": {
+  "chain_termination": {
+    "policy": "terminal",
+    "max_levels": 1
+  },
   "evidence_chain": [
     {
       "decision_id": "urn:source-engineering:decision:<uuid>",
@@ -184,7 +188,8 @@ The `evidence` part is the EvidenceChain that links each decision to its support
             "calibrated_score": 0.85,
             "basis": "Source is recent and authoritative; transformation is deterministic."
           },
-          "polarity": "supports"
+          "polarity": "supports",
+          "source_type": "human-authored"
         }
       ],
       "contradicting_evidence": [],
@@ -202,6 +207,20 @@ The `evidence` part is the EvidenceChain that links each decision to its support
   ]
 }
 ```
+
+### The RFC-0002 fields (v1.2.0): source_type and chain_termination
+
+COTS schema v1.2.0 adds two optional fields to the evidence part, per RFC-0002 (recursive evidence chains). Both are optional; a v1.1.0 producer does not emit them, and consumers treat absence as "the producer has not adopted RFC-0002" (minor-version rules in [`versioning.md`](../versioning.md)).
+
+**`EvidenceItem.source_type`** declares what kind of source the evidence item resolves to. Values: `human-authored` (the terminal item is a human-authored source), `human-curated` (a human selected or verified the item), `model-generated` (the item is itself the output of a model; the chain is recursive at this item), `mixed`. A COTS MUST flag any evidence item that is itself a model output with `model-generated`.
+
+**`evidence.chain_termination`** declares the COTS's chain termination policy:
+
+- `terminal`: all chains resolve to human-authored sources. The discipline's default.
+- `bounded_recursion`: chains may include up to `max_levels` levels of model outputs, declared per-COTS. The bound is recommended to be 1; bounds greater than 1 are permitted but flagged for the user.
+- `unbounded_recursion`: chains may include any depth of model outputs. Conformance flags the COTS in its warning set.
+
+A COTS that violates its declared chain termination policy fails validation (TC-RC-04): e.g. a `terminal` COTS containing a `model-generated` evidence item.
 
 ## Part 5 -- validation
 

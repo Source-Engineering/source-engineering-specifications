@@ -185,3 +185,65 @@ Each test case is named, has a description, has an input COTS (or a description 
 **Input.** A conformant v1.0.0 COTS.
 
 **Expected outcome.** Pass. The field is optional; its absence means the producer has not floored Layer 2 (minor-version rules in `versioning.md`).
+
+## Test case TC-SEM-01 -- URN grammar
+
+**Description.** Every identifier in the COTS is a well-formed Source Engineering URN.
+
+**Input.** A COTS whose `cots_id`, source, decision, evidence, claim, and basis identifiers all match the `urn:source-engineering:<type>:<id>` grammar.
+
+**Expected outcome.** Pass.
+
+## Test case TC-SEM-02 -- Evidence chain resolution
+
+**Description.** Every reference in the evidence chain resolves within the same COTS.
+
+**Input.** A COTS whose every evidence item's `source_id` resolves to an entry in `inputs.source_artifacts`, every `claim_id` resolves to a claim, every claim's `supporting_evidence`/`contradicting_evidence` URNs resolve to evidence items, and every `decision_id` in the evidence chain resolves to a DecisionRecord.
+
+**Expected outcome.** Pass. A dangling reference fails with error `unresolved-reference` (per the cross-reference guarantees in `compatibility.md`).
+
+## Test case TC-SEM-03 -- Temporal ordering
+
+**Description.** Timestamps in the COTS are internally consistent.
+
+**Input.** A COTS whose `produced_at` is not before any source artifact's `issued_at`, whose decision `created_at` values are not before the source artifacts they rely on, and whose Layer 2 `validated_at` is not before `produced_at`.
+
+**Expected outcome.** Pass. An impossible ordering (evidence from the future) fails with error `temporal-inconsistency`.
+
+## Test case TC-RC-01 -- Recursive chain flagged
+
+**Description.** A COTS whose evidence includes a `model-generated` source_type item.
+
+**Input.** A COTS with `source_type: "model-generated"` on at least one evidence item.
+
+**Expected outcome.** Pass with warning `recursive-evidence` if the chain termination policy admits recursion; fail if the policy is `terminal` (TC-RC-04).
+
+## Test case TC-RC-02 -- Bounded recursion declares its bound
+
+**Description.** A COTS with `chain_termination.policy: "bounded_recursion"`.
+
+**Input.** A COTS declaring bounded recursion with `max_levels` present and at least 1.
+
+**Expected outcome.** Pass; a bound greater than 1 additionally warns `high-recursion-bound`.
+
+## Test case TC-RC-03 -- Unbounded recursion warned
+
+**Description.** A COTS with `chain_termination.policy: "unbounded_recursion"`.
+
+**Input.** A COTS declaring unbounded recursion.
+
+**Expected outcome.** Pass with warning `unbounded-recursion`. The suite records the position; the user decides.
+
+## Test case TC-RC-04 -- Chain termination policy violated
+
+**Description.** A COTS whose evidence violates its declared chain termination policy.
+
+**Input.** A `terminal` COTS containing a `model-generated` evidence item; or a `bounded_recursion` COTS whose model-generated depth exceeds its declared `max_levels`.
+
+**Expected outcome.** Fail with error `chain-termination-violated`.
+
+## Test case TC-RC-05 -- Legacy COTS without RFC-0002 fields
+
+**Input.** A v1.1.0 COTS without `source_type` and `chain_termination`.
+
+**Expected outcome.** Pass with warning `legacy-cots` (the suite accepts pre-RFC-0002 COTSs and records their legacy status).
