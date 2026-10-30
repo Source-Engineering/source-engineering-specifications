@@ -20,3 +20,8 @@ All notable changes to the Source Engineering specifications repo are recorded h
 - v0.1 is a pre-release. Per the versioning policy, pre-release versions are not required to maintain backwards compatibility.
 - The decision-types registry is at v0.1 with two initial decision-types. New decision-types can be added via RFC without breaking compatibility, per the minor-version rules.
 - The compatibility-test-suite.md is the canonical list of test cases; the conformance suite in `Source-Engineering/source-engineering-conformance` implements them.
+## [Unreleased]
+
+### Added
+
+- `compatibility-matrix.md` - the published per-floor compatibility matrix (specification x reference-implementation x conformance x tools), with the version pinning policy and the v0.1.0 floor's validated cross-check
