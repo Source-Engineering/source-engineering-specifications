@@ -11,6 +11,7 @@ This repository holds the discipline's normative technical requirements. Every c
 - `versioning.md` - the versioning policy. How schemas are versioned; what counts as a breaking change; what the compatibility guarantees are.
 - `compatibility.md` - the backward-compatibility guarantees. What a v1 COTS consumer must accept from a v1.x COTS producer.
 - `compatibility-test-suite.md` - the canonical test cases for the COTS schema. Used by the conformance suite in `Source-Engineering/source-engineering-conformance`.
+- `compatibility-matrix.md` - the published per-floor matrix of released specification, reference-implementation, conformance, and tools versions, with the cross-check that validated each floor.
 
 ## How to engage
 
