@@ -247,3 +247,45 @@ Each test case is named, has a description, has an input COTS (or a description 
 **Input.** A v1.1.0 COTS without `source_type` and `chain_termination`.
 
 **Expected outcome.** Pass with warning `legacy-cots` (the suite accepts pre-RFC-0002 COTSs and records their legacy status).
+
+## Test case TC-L3-01 -- GuardrailDecision well-formed
+
+**Input.** A COTS whose `decisions[0].guardrail` has a `decision` of `accepted`/`rejected`/`annotated`/`escalated`, a well-formed `rule_id`, a non-empty `rationale`, a `binding` boolean, and a valid `evaluated_at`.
+
+**Expected outcome.** Pass.
+
+## Test case TC-L3-02 -- Unknown guardrail decision
+
+**Input.** `decisions[0].guardrail.decision` is `blocked`.
+
+**Expected outcome.** Fail with error `unknown-guardrail-decision`.
+
+## Test case TC-L3-03 -- Rejection requires a binding rule
+
+**Input.** `guardrail.decision` is `rejected` but `binding` is `false`.
+
+**Expected outcome.** Fail with error `rejection-not-binding`. Only a binding rule can reject.
+
+## Test case TC-L3-04 -- Advisory annotation is not binding
+
+**Input.** `guardrail.decision` is `annotated` and `binding` is `true`.
+
+**Expected outcome.** Fail with error `annotation-marked-binding`. An advisory rule annotates; it does not carry binding force.
+
+## Test case TC-L3-05 -- Empty rationale
+
+**Input.** `guardrail.rationale` is empty.
+
+**Expected outcome.** Fail with error `guardrail-rationale-missing`. Every GuardrailDecision is recorded with its rationale.
+
+## Test case TC-L3-06 -- validation_status consistency
+
+**Input.** A `rejected` decision whose `validation_status.status` is not `superseded`; or an `escalated` decision whose status is not `appealed`.
+
+**Expected outcome.** Fail with error `guardrail-status-inconsistent`.
+
+## Test case TC-L3-07 -- Guardrail field optional at v1.2.0
+
+**Input.** A conformant v1.2.0 COTS without the `guardrail` field.
+
+**Expected outcome.** Pass.
