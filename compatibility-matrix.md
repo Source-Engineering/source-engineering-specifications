@@ -11,7 +11,7 @@ The field-level, entity-level, cross-reference, and temporal guarantees that a c
 | Floor | COTS schema version | specifications | reference-implementation | conformance | tools | Conformance test cases | Validated together |
 |---|---|---|---|---|---|---|---|
 | v0.1 (Layer 1 typed-model floor) | 1.0.0 | v0.1.0 | v0.1.0 | v0.1.0 | v0.1.0 | TC-FF-01..02, TC-SI-01..07, TC-LI-01..05, TC-CI-01..02, TC-DI-01, TC-EI-01 | Yes: the reference implementation's `example:legal-summarization` output validates PASS (0 errors, 0 warnings) against the conformance suite, and the tools suite reads the same COTS (5/5 tests) |
-| v0.2 (Layer 2 runtime-validation floor; RFC-0001) | 1.1.0 | planned | planned | planned | planned | adds TC-L2-01..N | On landing of RFC-0001 |
+| v0.2 (Layer 2 runtime-validation floor; RFC-0001) | 1.1.0 | v0.2.0 | v0.2.0 | v0.2.0 | v0.2.0 (practice handbook ch. 9) | adds TC-L2-01..06 | Yes: the reference implementation's Layer 2 module attaches Validation records to its example COTS; the conformance suite's Layer 2 fixtures (conformant, bad flag type, bad decision, flags/decision mismatch, bad timestamp) pass/fail TC-L2-01..06 as specified; `se-trace validate-runtime` reads the same records (7/7 tools tests, 18/18 ref-impl tests, 23/23 conformance tests, all CI-green) |
 
 ## How to read the matrix
 
@@ -29,5 +29,5 @@ The field-level, entity-level, cross-reference, and temporal guarantees that a c
 
 ## Current status
 
-- **v0.1.0** is the current floor: Layer 1 (typed model), COTS schema 1.0.0.
-- v0.2 (Layer 2 runtime validation, RFC-0001) is the next floor; see [`../../project-governance/.github/epics/advancement-plan.md`](https://github.com/Source-Engineering/project-governance/blob/main/.github/epics/advancement-plan.md) Phase 1.
+- **v0.2.0** is the current floor: Layer 2 (runtime validation), COTS schema 1.1.0, RFC-0001 Implemented.
+- The next work is semantic conformance (Advancement Plan Phase 2); Layer 3 (guardrails DSL) follows per the Advancement Plan.
