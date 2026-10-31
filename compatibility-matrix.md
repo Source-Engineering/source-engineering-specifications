@@ -13,6 +13,8 @@ The field-level, entity-level, cross-reference, and temporal guarantees that a c
 | v0.1 (Layer 1 typed-model floor) | 1.0.0 | v0.1.0 | v0.1.0 | v0.1.0 | v0.1.0 | TC-FF-01..02, TC-SI-01..07, TC-LI-01..05, TC-CI-01..02, TC-DI-01, TC-EI-01 | Yes: the reference implementation's `example:legal-summarization` output validates PASS (0 errors, 0 warnings) against the conformance suite, and the tools suite reads the same COTS (5/5 tests) |
 | v0.2 (Layer 2 runtime-validation floor; RFC-0001) | 1.1.0 | v0.2.0 | v0.2.0 | v0.2.0 | v0.2.0 (practice handbook ch. 9) | adds TC-L2-01..06 | Yes: the reference implementation's Layer 2 module attaches Validation records to its example COTS; the conformance suite's Layer 2 fixtures (conformant, bad flag type, bad decision, flags/decision mismatch, bad timestamp) pass/fail TC-L2-01..06 as specified; `se-trace validate-runtime` reads the same records (7/7 tools tests, 18/18 ref-impl tests, 23/23 conformance tests, all CI-green) |
 
+| v0.3 (semantic conformance + RFC-0002 recursive evidence chains) | 1.2.0 | v0.3.0 | v0.3.0 | v0.3.0 | v0.3.0 (practice ch. 10, education Unit 6) | adds TC-SEM-01..03, TC-RC-01..05 | Yes: the conformance suite's semantic fixtures (bad URN, dangling source, future evidence, terminal-policy violation, bounded/unbounded recursion) pass/fail TC-SEM/TC-RC as specified; the reference implementation's Layer 2 flags recursive chains (21/21 tests); `se-trace recursive` walks the same chains (9/9 tools tests); all CI-green |
+
 ## How to read the matrix
 
 - A row is a **floor**: a set of released artefact versions that were validated against each other as one vertical slice. The `Validated together` column states the concrete cross-check that was run.
@@ -29,5 +31,5 @@ The field-level, entity-level, cross-reference, and temporal guarantees that a c
 
 ## Current status
 
-- **v0.2.0** is the current floor: Layer 2 (runtime validation), COTS schema 1.1.0, RFC-0001 Implemented.
-- The next work is semantic conformance (Advancement Plan Phase 2); Layer 3 (guardrails DSL) follows per the Advancement Plan.
+- **v0.3.0** is the current floor: semantic conformance + recursive evidence chains, COTS schema 1.2.0, RFC-0002 Implemented.
+- The next work is Layer 3 (business guardrails DSL, RFC-0003) per the Advancement Plan Phase 3.
