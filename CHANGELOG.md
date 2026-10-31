@@ -34,3 +34,7 @@ All notable changes to the Source Engineering specifications repo are recorded h
 ### Changed
 
 - `compatibility-matrix.md`: the v0.2 row recorded with the floor's real tags (v0.2.0 across specifications, reference-implementation, conformance, tools, practice) and the validated cross-check; current floor is v0.2.0
+
+### Changed
+
+- `compatibility-matrix.md`: the v0.3 row recorded with the floor's real tags (v0.3.0 across six repositories) and the validated cross-check; current floor is v0.3.0
