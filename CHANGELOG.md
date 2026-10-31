@@ -30,3 +30,7 @@ All notable changes to the Source Engineering specifications repo are recorded h
 
 - `cots/README.md` Part 3: the optional `decisions[*].validation` field (ValidationFlags, `decision_on_validation`, runtime metadata) per RFC-0001; optional per the minor-version rules
 - `compatibility-test-suite.md`: test cases TC-L2-01..06 covering the Layer 2 Validation record (well-formedness, enum enforcement, flags/decision consistency, timestamp validity, v1.0.0 optionality)
+
+### Changed
+
+- `compatibility-matrix.md`: the v0.2 row recorded with the floor's real tags (v0.2.0 across specifications, reference-implementation, conformance, tools, practice) and the validated cross-check; current floor is v0.2.0
