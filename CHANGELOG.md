@@ -34,3 +34,8 @@ All notable changes to the Source Engineering specifications repo are recorded h
 ### Changed
 
 - `compatibility-matrix.md`: the v0.2 row recorded with the floor's real tags (v0.2.0 across specifications, reference-implementation, conformance, tools, practice) and the validated cross-check; current floor is v0.2.0
+
+### Added (RFC-0003 Layer 3 floor, COTS schema v1.3.0)
+
+- `cots/README.md` Part 3: the optional `decisions[*].guardrail` field (GuardrailDecision) per RFC-0003, with the normative validation_status update rule (rejected -> superseded, escalated -> appealed) and the normative rule grammar
+- `compatibility-test-suite.md`: test cases TC-L3-01..07 covering the GuardrailDecision (well-formedness, enum enforcement, binding/advisory distinction, rationale presence, status consistency, v1.2.0 optionality)

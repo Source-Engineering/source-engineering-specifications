@@ -160,6 +160,41 @@ The optional `validation` field on each `DecisionRecord` carries the Layer 2 (Ru
 
 The interface contract is normative in `Source-Engineering/source-engineering-architecture/layer-contracts/layer-2-runtime-validation.md`.
 
+### The Layer 3 GuardrailDecision record (v1.3.0)
+
+COTS schema v1.3.0 adds the optional `guardrail` field to each DecisionRecord, per RFC-0003. The field is **optional**: a v1.2.0 producer does not emit it, and consumers treat absence as "the producer has not floored Layer 3."
+
+```json
+"guardrail": {
+  "decision": "rejected",
+  "rule_id": "urn:source-engineering:rule:<id>",
+  "rationale": "The governing-law constraint forbids summarisation for this jurisdiction without human sign-off.",
+  "binding": true,
+  "evaluated_at": "2026-10-30T12:00:00Z",
+  "evaluated_by": "layer3-business-guardrails"
+}
+```
+
+When present, it MUST satisfy:
+
+- `decision` is one of `accepted`, `rejected` (a binding rule stopped the response), `annotated` (an advisory rule recorded a note), or `escalated` (the decision is surfaced to a human or organisational authority with the escalation reason).
+- `rule_id` identifies the rule that fired; `rationale` is the rule's rationale in domain terms; `binding` records whether the rule was binding (`reject`) or advisory (`annotate`).
+- **The validation_status update rule (normative).** A `rejected` decision's `validation_status.status` MUST be `superseded`; an `escalated` decision's MUST be `appealed`. The suite verifies this consistency (TC-L3-06).
+- **No silent rejection.** A rejection stops the response and is recorded with the rule and rationale. The discipline does not silently drop the response.
+- The GuardrailDecision is attached **after** Layer 2's Validation record. A decision is guarded only after it is validated.
+
+The rule grammar (normative, per RFC-0003):
+
+```
+rule <rule-id> {
+  when <condition-on-cots>
+  then <reject | annotate | escalate>
+  with rationale "<rationale-in-domain-terms>"
+}
+```
+
+The condition references COTS schema fields: constraint scope/value, source temporal validity, decision-type, and Layer 2 ValidationFlags. `then reject` is a binding rule; `then annotate` is advisory; `then escalate` refers the decision upward. A guardrail silent about its type is treated as binding.
+
 ## Part 4 -- evidence
 
 The `evidence` part is the EvidenceChain that links each decision to its supporting and contradicting evidence.
