@@ -103,6 +103,10 @@ The `context` part is the runtime parameters in effect at the call.
 }
 ```
 
+### The context surfacing contract (RFC-0004)
+
+Recording the parameters is necessary but not sufficient. Per RFC-0004, a COTS's `context` part is considered **surfaced** when a user-facing artifact -- the Context Graph -- is producible from the COTS alone, showing every `context.parameters` entry with its value, every `context.constraints` entry, and their typed edges to the rest of the COTS (`set-by`, `constrains`, `contextualises`). "Surfaced" means reproducible by the user without asking the operator; it does not require the user to be able to change the parameters at runtime. The normative rendering is the `se-trace context-graph` subcommand in `Source-Engineering/source-engineering-tools`. The typed edge vocabulary floor is `supports`, `contradicts`, `contextualises`, `constrains`, `set-by`; new relationship types require a CR. Conformance test cases TC-CG-01..03 verify the contract.
+
 ## Part 3 -- decisions
 
 The `decisions` part is an array of `DecisionRecord` objects as defined in the data model.

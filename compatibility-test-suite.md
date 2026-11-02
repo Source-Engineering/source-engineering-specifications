@@ -289,3 +289,27 @@ Each test case is named, has a description, has an input COTS (or a description 
 **Input.** A conformant v1.2.0 COTS without the `guardrail` field.
 
 **Expected outcome.** Pass.
+
+## Test case TC-CG-01 -- Context parameters surfaced
+
+**Description.** Every runtime parameter in `context.parameters` is present and visible in the user-facing Context Graph, each with its value and a `set-by` edge from the context node (RFC-0004 surfacing contract).
+
+**Input.** A COTS with a complete `context.parameters` object (including any `additional` entries).
+
+**Expected outcome.** Pass. The conformance suite verifies every parameter key (including `additional` keys) appears as a parameter node. A missing parameter fails with error `context-parameter-not-surfaced`.
+
+## Test case TC-CG-02 -- Constraints surfaced
+
+**Description.** Every entry in `context.constraints` appears in the Context Graph with a `constrains` edge (RFC-0004).
+
+**Input.** A COTS with one or more constraints.
+
+**Expected outcome.** Pass. A constraint absent from the graph fails with error `context-constraint-not-surfaced`. A COTS with no constraints passes trivially.
+
+## Test case TC-CG-03 -- Contextualises edges to decisions
+
+**Description.** Each decision in the COTS carries `contextualises` edges from the context parameters, recording that the decision was made under this context (RFC-0004, Q2.2 contract).
+
+**Input.** A COTS with at least one decision and a complete `context.parameters`.
+
+**Expected outcome.** Pass. A decision with no `contextualises` edge from any parameter fails with error `decision-not-contextualised`.
