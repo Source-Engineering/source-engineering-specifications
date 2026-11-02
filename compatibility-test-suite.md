@@ -313,3 +313,41 @@ Each test case is named, has a description, has an input COTS (or a description 
 **Input.** A COTS with at least one decision and a complete `context.parameters`.
 
 **Expected outcome.** Pass. A decision with no `contextualises` edge from any parameter fails with error `decision-not-contextualised`.
+
+## Test case TC-L4-01 -- Audit trail complete
+
+**Description.** Every decision's `audit_history` starts with `created` and every entry has a valid URI id, an action, a performer, and a valid timestamp (RFC-0005).
+
+**Input.** A COTS whose decisions carry complete audit histories.
+
+**Expected outcome.** Pass. An empty history, a non-`created` first entry, or an incomplete entry fails with error `audit-trail-incomplete`.
+
+## Test case TC-L4-02 -- Audit trail append-only
+
+**Description.** Entry ids are unique and `performed_at` is monotonically non-decreasing within each decision's history (RFC-0005 structural check for append-only).
+
+**Input.** A COTS with a duplicate audit entry id, or an out-of-order entry.
+
+**Expected outcome.** Fail with error `audit-not-append-only`.
+
+## Test case TC-L4-03 -- Lifecycle events resolve
+
+**Description.** Every non-`created` audit entry names a `decision_id` that resolves to a decision in the COTS (RFC-0005).
+
+**Input.** An audit entry whose `decision_id` does not resolve.
+
+**Expected outcome.** Fail with error `lifecycle-event-dangling`.
+
+## Test case TC-L4-04 -- Rerun/supersession linkage
+
+**Description.** `rerun` entries carry `rerun_of` resolving to a known decision; `superseded` entries carry `superseded_by` resolving to a known decision (RFC-0005).
+
+**Input.** A `rerun` entry without `rerun_of`, or with an unresolvable one.
+
+**Expected outcome.** Fail with error `lifecycle-linkage-missing`.
+
+## Test case TC-L4-05 -- Legacy audit trail
+
+**Input.** A COTS whose decisions have a `created`-only audit history (pre-RFC-0005 producer).
+
+**Expected outcome.** Pass with warning `legacy-audit`.
