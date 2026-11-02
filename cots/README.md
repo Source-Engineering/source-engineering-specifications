@@ -199,6 +199,17 @@ rule <rule-id> {
 
 The condition references COTS schema fields: constraint scope/value, source temporal validity, decision-type, and Layer 2 ValidationFlags. `then reject` is a binding rule; `then annotate` is advisory; `then escalate` refers the decision upward. A guardrail silent about its type is treated as binding.
 
+### The Layer 4 audit-trail semantics (RFC-0005)
+
+Each `DecisionRecord.audit_history` is an **append-only** lifecycle log (COTS schema semantics per RFC-0005). Normative rules, verified by TC-L4-01..05:
+
+- The first entry MUST be `created`; every entry carries `id` (a URI), `action`, `performed_by`, `performed_at`, and `notes`.
+- Entry ids MUST be unique and `performed_at` MUST be monotonically non-decreasing within a decision's history (the structural check for append-only; the reference implementation's store additionally rejects rewrites outright).
+- Every non-`created` entry's `notes` MUST name its `decision_id=...`, which MUST resolve to a decision in the COTS. `rerun` entries MUST additionally carry `rerun_of=<original-decision-id>`; `superseded` entries MUST carry `superseded_by=<superseding-decision-id>`; `corrected` entries SHOULD carry `affected_source_id=<source-id>`.
+- A COTS with a `created`-only history is accepted with a `legacy-audit` warning (pre-RFC-0005 producer).
+
+The persistent substrate behind `audit_history` is the Layer 4 store in `Source-Engineering/source-engineering-reference-implementation` (`src/layer4/`, JSONL append-only first, storage interface for other backends), per the Layer 4 contract in `Source-Engineering/source-engineering-architecture/layer-contracts/layer-4-audit-trail.md`.
+
 ## Part 4 -- evidence
 
 The `evidence` part is the EvidenceChain that links each decision to its supporting and contradicting evidence.
